@@ -1,4 +1,4 @@
 <%= @movie.title %>
 
-<%= button_to "Save", save_path %></br>
-<%= button_to "Favorite", add_favorite_path %>
+<%= button_to "Save", save_path(rating: 50) %></br>
+<%= button_to "Favorite", save_path(rating: 100) %>

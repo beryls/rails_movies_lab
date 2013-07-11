@@ -5,9 +5,8 @@
   <button>Search</button>
 </form>
 
-<% if @movies.nil? %>
-<% else %>
+<% if @movies %>
   <% @movies.each do |movie| %>
-    <%= link_to movie.title, movie.id %>
+    <%= link_to movie.title, movie.id %><br>
   <% end %>
 <% end %>

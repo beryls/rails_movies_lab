@@ -3,9 +3,8 @@ class MoviesController < ApplicationController
   # /movies/search
   # movies_search path
   def search
-    if params[:movie].nil?
-    else
-      @movies = Imdb::Search.new(params[:movie]).movies
+    if params[:movie]
+      @movies = Imdb::Search.new(params[:movie]).movies[0..9]
     end
       render "index"
   end
@@ -22,7 +21,7 @@ class MoviesController < ApplicationController
     movie.year = @movie.year
     movie.plot = @movie.plot
     movie.mpaa_rating = @movie.mpaa_rating
-    movie.rating = 50
+    movie.rating = params[:rating]
     movie.save
     redirect_to saved_path
 
@@ -35,21 +34,12 @@ class MoviesController < ApplicationController
   end
 
   def saved
-    @movies = Movie.all
+    @movies = Movie.where('rating < ?', 100)
   end
 
-  # Post
-  # /
-  def add_favorite
-    @movie = Imdb::Movie.new(params[:id])
-    movie = Movie.new
-    movie.title = @movie.title
-    movie.year = @movie.year
-    movie.plot = @movie.plot
-    movie.mpaa_rating = @movie.mpaa_rating
-    movie.rating = 100
-    movie.save
-    redirect_to saved_path
+  def favorites
+    @movies = Movie.where(rating: 100)
+    render 'saved'
   end
 end
 
